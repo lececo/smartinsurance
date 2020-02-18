@@ -15,6 +15,7 @@
   <div class="my-content">
     <div id="speed">Waiting for COBI.Bike to load...</div>
     <div id="location">Waiting for COBI.Bike to load...</div>
+    <div id="heading">Waiting for COBI.Bike to load...</div>
   </div>
 
   <div id="cobi-thumbnail">
@@ -38,7 +39,12 @@
     });
 
     COBI.mobile.location.subscribe(function(location) {      
-      $('#location').html(`bearing ${ location.bearing } and speed${location.speed} and altitiude${location.altitude} `);
+      $('#location').html(`bearing ${ location.bearing }, and coordinate ${ location.coordinate }
+       and altitiude${location.altitude} `);
+    });
+
+    COBI.mobile.heading.subscribe(function(heading) {      
+      $('#heading').html(`heading ${ heading }`);
     });
 
   </script>
