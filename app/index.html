@@ -211,7 +211,7 @@
     */
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
-      if(speedData.length > 6){
+      if(speedData.length > 5){
         speedData.shift();
         speedData.push(speed);
       }else{
@@ -226,14 +226,14 @@
 
       speedSum = speedSum / speedData.length;
 
-      if(speedSum > 0.0 && speedSum < 0.2){
+      if(speedSum > 0.0 && speedSum < 0.4){
         score = 0.01;
-      } else if (speedSum >= 0.2 && speedSum < 1){
-        score = getRandomArbitrary(1, 2.5) / 10;
-      } else if (speedSum >= 5 && speedSum < 7) {
-        score = getRandomArbitrary(2.5, 4) / 10;
+      } else if (speedSum >= 0.4 && speedSum < 2.3){
+        score = getRandomArbitrary(1, 3) / 10;
+      } else if (speedSum >= 2.3 && speedSum < 4) {
+        score = getRandomArbitrary(3, 7) / 10;
       } else if (speedSum >= 4) {
-        score = getRandomArbitrary(7.5, 10) / 10;
+        score = getRandomArbitrary(7, 10) / 10;
       }
 
       score *= 100;
