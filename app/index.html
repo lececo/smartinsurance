@@ -147,7 +147,7 @@
     
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
-      if(speedData.length > 10){
+      if(speedData.length > 5){
       speedData.shift();
       speedData.push(speed);
     }else{
@@ -180,7 +180,6 @@
         point = chartSpeed.series[0].points[0];
         // newVal = point.y + inc;
         newVal = Math.round(score.toFixed(2));
-
         point.update( Math.round(score.toFixed(2)));
     }
 
