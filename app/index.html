@@ -107,6 +107,8 @@
     
 
     var score;
+    var headingData = [];
+    var speedData = [];
 
     
     // Subscribe to a data service
@@ -130,8 +132,22 @@
     // }
 
 
+    /*
+ // Subscribe to a data service
+    COBI.rideService.speed.subscribe(function(speed) {      
       $('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
     });
+
+    COBI.mobile.heading.subscribe(function(heading) {      
+      headingData.push(heading);
+    });
+    */
+
+
+      $('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
+    });
+
+
 
         var gaugeOptions = {
         chart: {
