@@ -135,12 +135,14 @@
 
     // Authenticate your module
     COBI.init('token');
-    
 
     let score = 0.1;
     let headingData = [];
     let speedData = [];
 
+    function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+    }
     
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {      
