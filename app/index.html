@@ -150,7 +150,7 @@
         return Math.random() * (max - min) + min;
     }
 
-/*
+
     COBI.mobile.heading.subscribe(function(heading) {
         if(headingData.length > 10){
           headingData.shift();
@@ -172,7 +172,7 @@
           score += 0.5;
         }
       });
-    */
+    
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
 
@@ -200,7 +200,6 @@
       } else if (speedSum >= 4) {
         score = getRandomArbitrary(7, 10) / 10;
       }
-
 
       score *= 100;
 
