@@ -173,6 +173,8 @@
   <!-- COBI.JS -->
   <script src="https://cdn.cobi.bike/cobi.js/0.44.0/cobi.js"></script>
 
+  <div id="SPEEDDEBUG"></div>
+
   <script>
     // Authenticate your module
     COBI.init('token');
@@ -211,6 +213,7 @@
     */
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
+
       if(speedData.length > 5){
         speedData.shift();
         speedData.push(speed);
@@ -236,9 +239,12 @@
         score = getRandomArbitrary(7, 10) / 10;
       }
 
+
       score *= 100;
 
-    var point;
+      document.getElementById("SPEEDDEBUG").innerHTML = "SpeedSum: " + speedSum +  "score: " + score;
+
+      var point;
 
     if (chartSpeed) {
         point = chartSpeed.series[0].points[0];
