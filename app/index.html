@@ -137,13 +137,45 @@
     COBI.init('token');
     
 
-    var score;
-    var headingData = [];
-    var speedData = [];
+    let score;
+    let headingData = [];
+    let speedData = [];
 
+
+    function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+    }
     
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {      
+
+    if(speedData.length > 10){
+      speedData.shift();
+      speedData.push(speed);
+    }else{
+      speedData.push(speed);
+    }
+    
+    let i = 0;
+    let speedSum = 0;
+    for(i = 0; i < speedData.length; i++){
+      speedSum += speedData[i];
+    }
+
+    speedSum = speedSum / speedData.length;
+
+    if(speedSum > 0.0 && speedSum < 0.5){
+      score = 0.01;
+    } else if (speedSum >= 0.5 && speedSum < 5){
+      score = getRandomArbitrary(1, 4.5) / 10;
+    } else if (speedSum >= 5 && speedSum < 7) {
+      score = getRandomArbitrary(4.5, 7.5) / 10;
+    } else if (speedSum >= 7) {
+      score = getRandomArbitrary(7.5, 10) / 10;
+    }
+
+
+    console.log(score);
 
     // var point,
     //   newVal,
