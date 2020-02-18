@@ -14,9 +14,7 @@
   </div>
   <div class="my-content">
     <div id="speed">Waiting for COBI.Bike to load...</div>
-    <div id="bearing">Waiting for COBI.Bike to load...</div>
-    <div id="horizontalAccuracy">Waiting for COBI.Bike to load...</div>
-    <div id="LocationSpeed">Waiting for COBI.Bike to load...</div>
+    <div id="location">Waiting for COBI.Bike to load...</div>
   </div>
 
   <div id="cobi-thumbnail">
@@ -39,18 +37,10 @@
       $('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
     });
 
-    COBI.Location.bearing.subscribe(function(bearing) {      
-      $('#bearing').html(`Bearing ${ bearing }`);
+    COBI.mobile.location.subscribe(function(location) {      
+      $('#location').html(`bearing ${ location.bearing } and speed${location.speed} and altitiude${location.altitude} `);
     });
 
-    COBI.Location.speed.subscribe(function(speed) {
-      $('#LocationSpeed').html(`LocationSpeed ${ speed }`);
-    });
-
-    COBI.Location.horizontalAccuracy.subscribe(function(horizontalAccuracy) {
-      $('#horizontalAccuracy').html(`horizontalAccuracy ${ horizontalAccuracy }`);
-    });
-    
   </script>
   
 </body>
