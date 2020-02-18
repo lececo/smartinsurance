@@ -141,10 +141,6 @@
     let headingData = [];
     let speedData = [];
 
-
-    function getRandomArbitrary(min, max) {
-        return Math.random() * (max - min) + min;
-    }
     
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {      
@@ -205,7 +201,7 @@
     */
 
 
-     // $('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
+      $('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
     });
 
 
@@ -274,9 +270,8 @@
         yAxis: {
             min: 0,
             max: 100,
-            title: {
-                text: 'Speed'
-            }
+            showFirstLabel: false,
+            showLastLabel: false
         },
 
         credits: {
@@ -287,14 +282,13 @@
             name: 'Speed',
             data: [50],
             dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:25px">{y}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">Preis/km</span>' +
-                    '</div>'
+              formatter: function() { return '<div style="text-align:center">' +
+                     '<span style="font-size:25px">' + score + '</span><br/>' +
+                     '<span style="font-size:12px;opacity:0.4">Preis/km</span>' +
+                     '</div>'}
             },
             tooltip: {
-                valueSuffix: ' km/h'
+                valueSuffix: ' Preis/km'
             }
         }]
 
