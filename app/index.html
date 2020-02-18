@@ -177,7 +177,7 @@
     // Authenticate your module
     COBI.init('token');
 
-    let score = 0.1;
+    let score = 0.05;
     let headingData = [];
     let speedData = [];
 
@@ -185,6 +185,27 @@
     function getRandomArbitrary(min, max) {
         return Math.random() * (max - min) + min;
     }
+
+
+    COBI.mobile.heading.subscribe(function(heading) {
+        if(headingData.length > 10){
+          headingData.shift();
+          headingData.push(heading);
+        }else{
+          headingData.push(heading);
+        }
+        
+        let lastVal = headingData[headingData.length - 1];
+        let firstVal = headingData[0];
+       
+        let erg = Math.abs(lastVal - firstVal);
+
+        if(erg >= 0 && erg < 20){
+          score += 0.05;
+        } else if (erg >= 50){
+          score += 0.3;
+        }
+      });
     
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
