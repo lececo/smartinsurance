@@ -109,7 +109,7 @@
 <body>
   <div id="header">
     <h2>Smart Insurance - Driving Behaviour</h2>
-    <div id="SPEEDDEBUG">amk</div>
+    <div id="HEADING">HEAD</div>
   </div>
 
   <a style="position: absolute; top: 90%; right: 0; background-color: rgb(0, 200, 230);"  href="/details" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Details</a>
@@ -145,7 +145,7 @@
 
 
     COBI.mobile.heading.subscribe(function(heading) {
-        if(headingData.length > 10){
+        if(headingData.length > 3){
           headingData.shift();
           headingData.push(heading);
         }else{
@@ -159,11 +159,16 @@
 
         if(erg >= 0 && erg < 20) {
           score += 0.05;
-        } else if (erg >= 33) {
+        } else if (erg >= 30) {
           score += 0.3;
         } else if (erg >= 55) {
           score += 0.5;
         }
+        
+
+        document.getElementById("HEADING").innerHTML = "heading: " + heading + "score: " score;
+        
+
       });
     
     // Subscribe to a data service
@@ -196,7 +201,7 @@
 
       score *= 100;
 
-      document.getElementById("SPEEDDEBUG").innerHTML = "SpeedSum: " + speedSum +  "score: " + score;
+      //document.getElementById("SPEEDDEBUG").innerHTML = "SpeedSum: " + speedSum +  "score: " + score;
 
       var point;
 
