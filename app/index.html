@@ -145,10 +145,10 @@
 
 
     COBI.mobile.heading.subscribe(function(heading) {
-        if(headingData.length > 3){
+        if (headingData.length > 3) {
           headingData.shift();
           headingData.push(heading);
-        }else{
+        } else {
           headingData.push(heading);
         }
         
@@ -165,7 +165,7 @@
           score += 0.5;
         }
         
-        document.getElementById("HEADING").innerHTML = "heading: " + heading + "score: " + score;
+        document.getElementById("HEADING").innerHTML = "heading: " + erg + "score: " + score;
       });
     
     // Subscribe to a data service
