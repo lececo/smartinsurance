@@ -6,6 +6,67 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />    
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
     <link rel="stylesheet" href="styles/cobi.css">
+    <style>
+      .highcharts-figure .chart-container {
+        width: 100%;
+        height: 100%;
+      }
+      .highcharts-background{
+        fill: rgb(45, 45, 55)!important;
+        width: 100%!important;
+        height: 100%!important;         
+      }
+
+      .highcharts-figure, .highcharts-data-table table {
+        width: 800px;
+        width: 80%!important;
+        height: 80%!important;  
+        position: absolute;
+        bottom: 0;
+        left: 10%; 
+        margin: 0 auto;
+      }
+
+      .highcharts-data-table table {
+          font-family: Verdana, sans-serif;
+          border-collapse: collapse;
+          border: 1px solid #EBEBEB;
+          margin: 10px auto;
+          text-align: center;
+          width: 100%;
+          max-width: 500px;
+      }
+      .highcharts-data-table caption {
+          padding: 1em 0;
+          font-size: 1.2em;
+          color: #555;
+      }
+      .highcharts-data-table th {
+        font-weight: 600;
+          padding: 0.5em;
+      }
+      .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+          padding: 0.5em;
+      }
+      .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+          background: #f8f8f8;
+      }
+      .highcharts-data-table tr:hover {
+          background: #f1f7ff;
+      }
+
+      @media (max-width: 600px) {
+        .highcharts-figure, .highcharts-data-table table {
+          width: 100%;
+        }
+        .highcharts-figure .chart-container {
+          width: 300px;
+          float: none;
+          margin: 0 auto;
+        }
+
+      }
+    </style>
 </head>
   
 <body>
@@ -20,6 +81,19 @@
     <img src="https://cdn.glitch.com/a8410dbe-26b4-49d1-9343-b70acf2ecb1a%2FCOBI_logo_neg_15mm_rgb_no-claim.png?1533568547538" width="150" height="50">
   </div>
 
+  <a href="google.de">link</a>
+
+  <figure class="highcharts-figure">
+    <div id="container-speed" class="chart-container"></div>
+  </figure>
+
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>  
+
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
   <!-- COBI.JS -->
@@ -29,10 +103,123 @@
     // Authenticate your module
     COBI.init('token');
     
+
+    var score;
+
+    
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {      
+
+    // var point,
+    //   newVal,
+    //   inc;
+
+    // if (chartSpeed) {
+    //     point = chartSpeed.series[0].points[0];
+    //     inc = Math.round((Math.random() - 0.5) * 100);
+    //     // newVal = point.y + inc;
+    //     newVal = Math.round(speed.toFixed(2));
+
+    //     if (newVal < 0 || newVal > 200) {
+    //         newVal = point.y - inc;
+    //     }
+
+    //     point.update(newVal);
+    // }
+
+
       $('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
     });
+
+        var gaugeOptions = {
+        chart: {
+            type: 'solidgauge'
+        },
+
+        title: null,
+
+        pane: {
+            center: ['50%', '85%'],
+            size: '140%',
+            startAngle: -90,
+            endAngle: 90,
+            background: {
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+                innerRadius: '60%',
+                outerRadius: '100%',
+                shape: 'arc'
+            }
+        },
+
+        exporting: {
+            enabled: false
+        },
+
+        tooltip: {
+            enabled: false
+        },
+
+        // the value axis
+        yAxis: {
+            stops: [
+                [0.1, '#55BF3B'], // green
+                [0.5, '#DDDF0D'], // yellow
+                [0.9, '#DF5353'] // red
+            ],
+            lineWidth: 0,
+            tickWidth: 0,
+            minorTickInterval: null,
+            tickAmount: 2,
+            title: {
+                y: -70
+            },
+            labels: {
+                y: 16
+            }
+        },
+
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        }
+    };
+
+    // The speed gauge
+    var chartSpeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+                text: 'Speed'
+            }
+        },
+
+        credits: {
+            enabled: false
+        },
+
+        series: [{
+            name: 'Speed',
+            data: [50],
+            dataLabels: {
+                format:
+                    '<div style="text-align:center">' +
+                    '<span style="font-size:25px">{y}</span><br/>' +
+                    '<span style="font-size:12px;opacity:0.4">Preis/km</span>' +
+                    '</div>'
+            },
+            tooltip: {
+                valueSuffix: ' km/h'
+            }
+        }]
+
+    }));
   </script>
   
 </body>
