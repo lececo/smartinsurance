@@ -107,7 +107,7 @@
   
 <body>
   <div id="header">
-    <h2>COBI.Bike Hello World - Caroline</h2>
+    <h2>Smart Insurance - Driving Behaviour</h2>
   </div>
 
   <div id="cobi-thumbnail">
@@ -130,9 +130,7 @@
   <!-- COBI.JS -->
   <script src="https://cdn.cobi.bike/cobi.js/0.44.0/cobi.js"></script>
 
-
   <script>
-
     // Authenticate your module
     COBI.init('token');
 
@@ -147,32 +145,40 @@
     
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
-      if(speedData.length > 5){
-      speedData.shift();
-      speedData.push(speed);
-    }else{
-      speedData.push(speed);
-    }
     
-    let i = 0;
-    let speedSum = 0;
-    for(i = 0; i < speedData.length; i++){
-      speedSum += speedData[i];
+    switch(COBI.parameters.context()) {
+      case COBI.context.onRide:
+        if(speedData.length > 6){
+          speedData.shift();
+          speedData.push(speed);
+        }else{
+          speedData.push(speed);
+        }
+        
+        let i = 0;
+        let speedSum = 0;
+        for(i = 0; i < speedData.length; i++){
+          speedSum += speedData[i];
+        }
+
+        speedSum = speedSum / speedData.length;
+
+        if(speedSum > 0.0 && speedSum < 0.2){
+          score = 0.01;
+        } else if (speedSum >= 0.2 && speedSum < 1){
+          score = getRandomArbitrary(1, 2) / 10;
+        } else if (speedSum >= 5 && speedSum < 7) {
+          score = getRandomArbitrary(2, 3) / 10;
+        } else if (speedSum >= 3) {
+          score = getRandomArbitrary(7.5, 10) / 10;
+        }
+
+        score *= 100;
+      case COBI.context.offRide:
+        score = 0;
+      default:
+        // ....
     }
-
-    speedSum = speedSum / speedData.length;
-
-    if(speedSum > 0.0 && speedSum < 0.5){
-      score = 0.01;
-    } else if (speedSum >= 0.5 && speedSum < 5){
-      score = getRandomArbitrary(1, 4) / 10;
-    } else if (speedSum >= 5 && speedSum < 7) {
-      score = getRandomArbitrary(4, 5.5) / 10;
-    } else if (speedSum >= 5.5) {
-      score = getRandomArbitrary(7.5, 10) / 10;
-    }
-
-    score *= 100;
 
     var point;
 
