@@ -140,14 +140,14 @@
     let headingData = [];
     let speedData = [];
 
+
     function getRandomArbitrary(min, max) {
         return Math.random() * (max - min) + min;
     }
     
     // Subscribe to a data service
-    COBI.rideService.speed.subscribe(function(speed) {      
-
-    if(speedData.length > 10){
+    COBI.rideService.speed.subscribe(function(speed) {
+      if(speedData.length > 10){
       speedData.shift();
       speedData.push(speed);
     }else{
@@ -172,23 +172,17 @@
       score = getRandomArbitrary(7.5, 10) / 10;
     }
 
+    score *= 100;
 
-    // var point,
-    //   newVal,
-    //   inc;
+    var point;
 
-    // if (chartSpeed) {
-    //     point = chartSpeed.series[0].points[0];
-    //     inc = Math.round((Math.random() - 0.5) * 100);
-    //     // newVal = point.y + inc;
-    //     newVal = Math.round(speed.toFixed(2));
+    if (chartSpeed) {
+        point = chartSpeed.series[0].points[0];
+        // newVal = point.y + inc;
+        newVal = Math.round(score.toFixed(2));
 
-    //     if (newVal < 0 || newVal > 200) {
-    //         newVal = point.y - inc;
-    //     }
-
-    //     point.update(newVal);
-    // }
+        point.update( Math.round(score.toFixed(2)));
+    }
 
 
     /*
@@ -203,7 +197,7 @@
     */
 
 
-      $('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
+      //$('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
     });
 
 
@@ -284,10 +278,9 @@
             name: 'Speed',
             data: [50],
             dataLabels: {
-              formatter: function() { return '<div style="text-align:center">' +
-                     '<span style="font-size:25px">' + score + '</span><br/>' +
-                     '<span style="font-size:12px;opacity:0.4">Preis/km</span>' +
-                     '</div>'}
+              formatter: function() {
+                return '0';
+              }
             },
             tooltip: {
                 valueSuffix: ' Preis/km'
