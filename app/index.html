@@ -137,7 +137,8 @@
     let score = 0.05;
     let headingData = [];
     let speedData = [];
-
+    let HEADING = 0;
+    let temp = 0;
 
     function getRandomArbitrary(min, max) {
         return Math.random() * (max - min) + min;
@@ -157,17 +158,19 @@
        
         let erg = Math.abs(lastVal - firstVal);
 
-        if(erg >= 0 && erg < 40) {
-          score += 0.05;
-        } else if (erg >= 40 && erg < 80) {
-          score += 0.3;
+        if(erg >= 0 && erg < 38) {
+          HEADING = 0.05 + temp;
+        } else if (erg >= 38 && erg < 80) {
+          HEADING = 0.3;
+          temp = 0.3;
+          setTimeout(function(){ temp = 0; }, 4000);
         } else if (erg >= 80) {
-          score += 0.5;
-        }
-        
-        document.getElementById("HEADING").innerHTML = "heading: " + erg + "score: " + score;
+          HEADING = 0.5;
+          temp = 0.5;
+          setTimeout(function(){ temp = 0; }, 4000);
+        }      
       });
-    
+  
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
 
@@ -195,6 +198,8 @@
       } else if (speedSum >= 4) {
         score = getRandomArbitrary(7, 10) / 10;
       }
+
+      score += HEADING;
 
       score *= 100;
 
