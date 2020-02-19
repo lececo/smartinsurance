@@ -202,6 +202,7 @@
     let acc_std = 0.7999625810730949;
     let angv_mu = 7.062526937550105;
     let angv_std = 122.48187466091417;
+    let V_MAX = 10;
 
 
     function getRandomArbitrary(min, max) {
@@ -244,16 +245,16 @@
         score -= 1
       }
       if (ang_vel > (v_mu + 2*angv_std)){
-        score += 50
+        score += 50*(velocity/V_MAX)
       }
       else if (ang_vel > (v_mu + angv_std)){
-        score += 20
+        score += 20*(velocity/V_MAX)
       }
       else if( ang_vel < (v_mu - 2*angv_std)){
-        score += 50
+        score += 50*(velocity/V_MAX)
       }
       else if( ang_vel < (v_mu - angv_std)){
-        score += 20
+        score += 20*(velocity/V_MAX)
       }
       else{
         score -= 9
@@ -324,6 +325,8 @@
         
         let delta_t = Math.abs(timestampDiffAcceleration[1]-timestampDiffAcceleration[0]) / 1000;
         vel = (speedData[1] - speedData[0]) / delta_t;
+
+        setTimeout(function(){ vel = 0; }, 3);
       }else {
         speedData.push(speed);
         let d = new Date();
