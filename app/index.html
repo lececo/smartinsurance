@@ -174,7 +174,7 @@
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
 
-      if(speedData.length > 5){
+      if(speedData.length > 3){
         speedData.shift();
         speedData.push(speed);
       }else{
