@@ -297,10 +297,10 @@
 
           let delta_t = Math.abs(timestampDiffAngular[1]-timestampDiffAngular[0]) / 1000;
           angular_velocity = (headingData[1] - headingData[headingData.length - 1])/delta_t;
-         
 
-          document.getElementById("HEADING").innerHTML = "BEFORE FUNC CALL: " + score;
-
+          document.getElementById("HEADING").innerHTML = "BEFORE FUNC CALL: ANGULAR_VELO " + angular_velocity
+          + "vel:" + vel + "speed:" + speedData[1];
+          
         } else {
           headingData.push(heading);
           let d = new Date();
