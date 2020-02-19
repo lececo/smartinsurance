@@ -295,7 +295,7 @@
           document.getElementById("HEADING").innerHTML = "BEFORE CALCULATION angular_velocity: " + score;
 
 
-          let delta_t = Math.abs(timestampDiffAngular[1]-timestampDiffAngular[0]) / 1000;
+          let delta_t = Math.abs(timestampDiffAngular[1]-timestampDiffAngular[timestampDiffAngular.length - 1]) / 1000;
           angular_velocity = (headingData[1] - headingData[headingData.length - 1])/delta_t;
 
           document.getElementById("HEADING").innerHTML = "BEFORE FUNC CALL: ANGULAR_VELO " + angular_velocity
