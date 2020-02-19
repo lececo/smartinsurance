@@ -158,16 +158,16 @@
        
         let erg = Math.abs(lastVal - firstVal);
 
-        if(erg >= 0 && erg < 38) {
+        if(erg >= 0 && erg < 45) {
           HEADING = 0.05 + temp;
-        } else if (erg >= 38 && erg < 80) {
+        } else if (erg >= 45 && erg < 80) {
           HEADING = 0.3;
           temp = 0.3;
-          setTimeout(function(){ temp = 0; }, 4000);
-        } else if (erg >= 80) {
+          setTimeout(function(){ temp = 0; }, 2000);
+        } else if (erg >= 90) {
           HEADING = 0.5;
           temp = 0.5;
-          setTimeout(function(){ temp = 0; }, 4000);
+          setTimeout(function(){ temp = 0; }, 2000);
         }      
       });
   
