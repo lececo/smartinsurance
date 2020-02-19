@@ -186,28 +186,103 @@
 
     let timestampDiffAcceleration = [];
     let vel = 0;
+    timestampDiffAcceleration[0] = 0;
+    timestampDiffAcceleration[1] = 1;
 
     let timestampDiffAngular = [];
+
     let angular_velocity = 0;
 
     let cumm_score = 0;
 
 
     let v_mu = 2.395183591542495;
-      let v_std = 1.0846470645951254;
-      let acc_mu = 0.07074356618083964;
-      let acc_std = 0.7999625810730949;
-      let angv_mu = 7.062526937550105;
-      let angv_std = 122.48187466091417;
+    let v_std = 1.0846470645951254;
+    let acc_mu = 0.07074356618083964;
+    let acc_std = 0.7999625810730949;
+    let angv_mu = 7.062526937550105;
+    let angv_std = 122.48187466091417;
 
 
     function getRandomArbitrary(min, max) {
         return Math.random() * (max - min) + min;
     }
 
+    function updateScore() {
+      let ang_vel = angular_velocity
+      let acc = vel
+      let velocity = speedData[1];
+
+      if (velocity > (v_mu + 2*v_std)) {
+      score += 2*(1 + v_mu / 10)
+      }
+
+      else if( velocity > (v_mu + v_std)) {
+        score += 1*(1 + v_mu / 10)
+      }
+      else if( velocity < (v_mu - 2*v_std)) {
+        score -= 2
+      }
+      else if (velocity < (v_mu - v_std)) {
+        score -= 1
+      }
+      if(acc > (acc_mu + acc_std)) {
+        score += 3*(1+acc_mu*2)
+      }
+      else if( acc > (acc_mu + acc_std/1.5)){
+        score += 3*(1+acc_mu*2)
+      }
+      else if( acc < (acc_mu - acc_std)) {
+        score += 3*(1+acc_mu*2)
+      }
+      else if( acc < (acc_mu - acc_std/1.5)){
+        score += 2*(1 + acc_mu*2)
+      }
+      else {
+        score -= 1
+      }
+      if (ang_vel > (v_mu + 2*angv_std)){
+        score += 50
+      }
+      else if (ang_vel > (v_mu + angv_std)){
+        score += 20
+      }
+      else if( ang_vel < (v_mu - 2*angv_std)){
+        score += 50
+      }
+      else if( ang_vel < (v_mu - angv_std)){
+        score += 20
+      }
+      else{
+        score -= 9
+      }
+
+      score = -(score + 8)*5
+      cumm_score += score
+      prediction = 0.5*score + 0.5*(cumm_score/(i+1))
+      prediction += BASE
+      if(prediction > 100){
+        prediction = 100;
+      }
+      else if (prediction < 0){
+        prediction = 0;
+      }
+
+      score = prediction;
+
+      document.getElementById("HEADING").innerHTML = "SCORE: " + score;
+
+      var point;
+      if (chartSpeed) {
+          point = chartSpeed.series[0].points[0];
+          // newVal = point.y + inc;
+          newVal = Math.round(score.toFixed(2));
+          point.update( Math.round(score.toFixed(2)));
+      }
+    }
 
     COBI.mobile.heading.subscribe(function(heading) {
-        if (headingData.length > 16) {
+        if (headingData.length >= 16) {
           headingData.shift();
           headingData.push(heading);
 
@@ -217,7 +292,7 @@
 
           let delta_t = Math.abs(timestampDiffAngular[1]-timestampDiffAngular[0]) / 1000;
           angular_velocity = (headingData[1] - headingData[headingData.length - 1])/delta_t;
-
+         
           updateScore();
         } else {
           headingData.push(heading);
@@ -227,7 +302,7 @@
       });
   
     // Subscribe to a data service
-    COBI.rideService.speed.subscribe(function(speed, time) {
+    COBI.rideService.speed.subscribe(function(speed) {
 
       if(speedData.length > 2){
         speedData.shift();
@@ -236,14 +311,14 @@
         speedData.push(speed);
         let d = new Date();
         timestampDiffAcceleration.push(d.getMilliseconds());
-      }else{
+        
+        let delta_t = Math.abs(timestampDiffAcceleration[1]-timestampDiffAcceleration[0]) / 1000;
+        vel = (speedData[1] - speedData[0]) / delta_t;
+      }else {
         speedData.push(speed);
         let d = new Date();
         timestampDiffAcceleration.push(d.getMilliseconds());
       }
-
-      delta_t = Math.abs(timestampDiffAcceleration[1]-timestampDiffAcceleration[0]) / 1000;
-      vel = (speedData[1] - speedData[0])/delta_t;
       
       // speedSum = speedSum / speedData.length;
 
@@ -279,80 +354,7 @@
       //$('#speed').html(`You are riding at ${ speed.toFixed(2) } m/s`);
     });
 
-    function updateScore() {
-
-      ang_vel = angular_velocity
-      acc = vel
-      velocity = speedData[1];
-
-
-
-    velocity, acc, ang_vel = tup
-    if (velocity > (v_mu + 2*v_std)) {
-      score += 2*(1 + v_mu / 10)
-    }
-
-    else if( velocity > (v_mu + v_std)) {
-        score += 1*(1 + v_mu / 10)
-      }
-    else if( velocity < (v_mu - 2*v_std)) {
-        score -= 2
-      }
-    else if (velocity < (v_mu - v_std)) {
-        score -= 1
-      }
-    if(acc > (acc_mu + acc_std)) {
-        score += 3*(1+acc_mu*2)
-      }
-    else if( acc > (acc_mu + acc_std/1.5)){
-        score += 3*(1+acc_mu*2)
-      }
-    else if( acc < (acc_mu - acc_std)) {
-        score += 3*(1+acc_mu*2)
-      }
-    else if( acc < (acc_mu - acc_std/1.5)){
-        score += 2*(1 + acc_mu*2)
-      }
-    else {
-        score -= 1
-      }
-    if (ang_vel > (v_mu + 2*angv_std)){
-        score += 50
-      }
-    else if (ang_vel > (v_mu + angv_std)){
-        score += 20
-      }
-    else if( ang_vel < (v_mu - 2*angv_std)){
-        score += 50
-      }
-    else if( ang_vel < (v_mu - angv_std)){
-        score += 20
-      }
-    else{
-        score -= 9
-    }
-
-    score = -(score + 8)*5
-    cumm_score += score
-    prediction = 0.5*score + 0.5*(cumm_score/(i+1))
-    prediction += BASE
-    if(prediction > 100){
-      prediction = 100;
-    }
-    else if (prediction < 0){
-      prediction = 0;
-    }
-    
-    score = prediction;
-
-      var point;
-      if (chartSpeed) {
-          point = chartSpeed.series[0].points[0];
-          // newVal = point.y + inc;
-          newVal = Math.round(score.toFixed(2));
-          point.update( Math.round(score.toFixed(2)));
-      }
-    }
+  
 
 
 
