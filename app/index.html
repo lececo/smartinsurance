@@ -215,9 +215,10 @@
       let ang_vel = angular_velocity
       let acc = vel
       let velocity = speedData[1];
+      score = 0;
 
       if (velocity > (v_mu + 2*v_std)) {
-      score += 2*(1 + v_mu / 10)
+        score += 2*(1 + v_mu / 10)
       }
 
       else if( velocity > (v_mu + v_std)) {
@@ -291,26 +292,22 @@
           let d = new Date();
           timestampDiffAngular.push(d.getMilliseconds());
 
-          
           document.getElementById("HEADING").innerHTML = "BEFORE CALCULATION angular_velocity: " + score;
-
 
           let delta_t = Math.abs(timestampDiffAngular[1]-timestampDiffAngular[timestampDiffAngular.length - 1]) / 1000;
           angular_velocity = (headingData[1] - headingData[headingData.length - 1])/delta_t;
 
-          document.getElementById("HEADING").innerHTML = "BEFORE FUNC CALL: ANGULAR_VELO " + angular_velocity
-          + "vel:" + vel + "speed:" + speedData[1];
+          document.getElementById("HEADING").innerHTML = "BEFORE FUNC CALL: " + score;
           
         } else {
           headingData.push(heading);
           let d = new Date();
           timestampDiffAngular.push(d.getMilliseconds());
-        }    
+        }
       });
   
     // Subscribe to a data service
     COBI.rideService.speed.subscribe(function(speed) {
-
       if(speedData.length > 2){
         speedData.shift();
         timestampDiffAcceleration.shift();
@@ -322,7 +319,7 @@
         let delta_t = Math.abs(timestampDiffAcceleration[1]-timestampDiffAcceleration[0]) / 1000;
         vel = (speedData[1] - speedData[0]) / delta_t;
 
-          updateScore();
+        updateScore();
       }else {
         speedData.push(speed);
         let d = new Date();
