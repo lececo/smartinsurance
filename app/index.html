@@ -209,6 +209,8 @@
     }
 
     function updateScore() {
+      document.getElementById("HEADING").innerHTML = "BEGINNING OF FUNC SCORE: " + score;
+
       let ang_vel = angular_velocity
       let acc = vel
       let velocity = speedData[1];
@@ -270,7 +272,7 @@
 
       score = prediction;
 
-      document.getElementById("HEADING").innerHTML = "SCORE: " + score;
+      document.getElementById("HEADING").innerHTML = "(INFUNC)SCORE: " + score;
 
       var point;
       if (chartSpeed) {
@@ -290,9 +292,17 @@
           let d = new Date();
           timestampDiffAngular.push(d.getMilliseconds());
 
+          
+          document.getElementById("HEADING").innerHTML = "BEFORE CALCULATION angular_velocity: " + score;
+
+
           let delta_t = Math.abs(timestampDiffAngular[1]-timestampDiffAngular[0]) / 1000;
           angular_velocity = (headingData[1] - headingData[headingData.length - 1])/delta_t;
          
+
+          document.getElementById("HEADING").innerHTML = "BEFORE FUNC CALL: " + score;
+
+
           updateScore();
         } else {
           headingData.push(heading);
