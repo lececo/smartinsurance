@@ -115,7 +115,7 @@
   <figure class="highcharts-figure" id = "chart">
     <div id="container-speed" class="chart-container"></div>
   </figure>
-  
+
   <table class="table" id = "table" style="display: none; position: absolute; top: 20%;">
     <thead>
         <tr style="color: white;"> 
@@ -125,37 +125,43 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="table-danger">
+        <tr class="table-danger" onclick="showDetailzChart(detailsSeries0)">
             <td>30:49</td>
             <td>60</td>
             <td>4€</td>
         </tr>      
-        <tr class="table-success">
+        <tr class="table-success" onclick="showDetailzChart(detailsSeries1)">
             <td>23:31</td>
             <td>15</td>
             <td>1€</td>
         </tr>
-        <tr class="table-warning">
+        <tr class="table-warning" onclick="showDetailzChart(detailsSeries2)">
             <td>18:00</td>
             <td>15</td>
             <td>1,50€</td>
         </tr>
-        <tr class="table-success">
+        <tr class="table-success" onclick="showDetailzChart(detailsSeries3)">
             <td>34:19</td>
             <td>26,1</td>
             <td>1,60€</td>
         </tr>
-        <tr class="table-danger">
-            <td>26:12</td>
+        <tr class="table-success" onclick="showDetailzChart(detailsSeries4)">
+            <td>35:12</td>
             <td>26,1</td>
-            <td>2,50€</td>
+            <td>1,50€</td>
         </tr>
     </tbody>
   </table>
 
+
+  <figure class="highcharts-figure" id = "detailsChart" style="position: absolute; top: 30%; display: none;">
+    <div id="container"></div>
+  </figure>
+  
+
 <button id="details" style="position: absolute; top: 80%; right: 0; background-color: rgb(0, 200, 230);"  onclick="showDetails()" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Details</button>
 <button id="back" style="position: absolute; top: 80%; right: 0; background-color: rgb(0, 200, 230); display: none;"  onclick="showGauge()" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Back</button>
-
+<button id="backChart" style="position: absolute; top: 80%; right: 0; background-color: rgb(0, 200, 230); display: none;"  onclick="showDetails()" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Back</button>
 
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
@@ -180,6 +186,32 @@
     let speedData = [];
     let HEADING = 0;
     let temp = 0;
+
+
+    let detailsSeries0 = {
+        name: 'Score',
+        data: [60, 45, 48, 39, 41, 38, 37, 36]
+    };
+
+    let detailsSeries1 = {
+        name: 'Score',
+        data: [36, 45, 48, 55, 56, 58, 60, 63]
+    };
+
+    let detailsSeries2 = {
+        name: 'Score',
+        data: [63, 61, 59, 58, 60, 61, 62, 63]
+    };
+
+    let detailsSeries3 = {
+        name: 'Score',
+        data: [63, 65, 68, 69, 67, 68, 71, 70]
+    };
+
+    let detailsSeries4 = {
+        name: 'Score',
+        data: [70, 73, 74, 75, 76, 76, 77, 77]
+    };
 
     function getRandomArbitrary(min, max) {
         return Math.random() * (max - min) + min;
@@ -360,6 +392,91 @@
 
     }));
 
+
+    let detailsChart = Highcharts.chart('container', {
+      credits: {
+        enabled: false
+      },
+
+      chart: {
+        height: 200
+      },
+
+      exporting: {
+        enabled: false
+      },
+
+      title: {
+          text: 'asdfasdaf'
+      },
+
+      subtitle: {
+          text: ''
+      },
+
+      yAxis: {
+          title: {
+              text: ''
+          }
+      },
+
+      xAxis: {
+          accessibility: {
+              rangeDescription: 'Range: 0 to 5'
+          }
+      },
+
+      legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle'
+      },
+
+      plotOptions: {
+          series: {
+              label: {
+                  connectorAllowed: false
+              },
+              pointStart: 0
+          }
+      },
+
+      series: [{
+        name: 'Score',
+        data: [70, 73, 74, 75, 76, 76, 77, 77]
+      }
+      // , {
+      //     name: 'Manufacturing',
+      //     data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+      // }, {
+      //     name: 'Sales & Distribution',
+      //     data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+      // }, {
+      //     name: 'Project Development',
+      //     data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+      // }, {
+      //     name: 'Other',
+      //     data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+      // }
+      ],
+
+      responsive: {
+          rules: [{
+              condition: {
+                  maxWidth: 500
+              },
+              chartOptions: {
+                  legend: {
+                      layout: 'horizontal',
+                      align: 'center',
+                      verticalAlign: 'bottom'
+                  }
+              }
+          }]
+      }
+
+      });
+
     function switchDisplay() {
       if(gauge) {
         showDetails()
@@ -373,12 +490,21 @@
 
     function showDetails() {
       hideChart()
+      hideDetailsChart()
       showTable()
     }
 
     function showGauge() {
       hideTable()
       showChart()
+      hideDetailsChart()
+    }
+
+    function showDetailzChart(seriez) {
+      updateDetailsChart(seriez)
+      showDetailsChart()
+      hideTable()
+      hideChart()
     }
 
     function hideChart() {
@@ -409,8 +535,25 @@
       back.style.display = ""
     }
 
-    
-    
+    function hideDetailsChart() {
+      let detailsChartElement = document.getElementById("detailsChart")
+      detailsChartElement.style.display = "none"
+      let detailsBack = document.getElementById("backChart")
+      detailsBack.style.display = "none"
+    }
+
+    function showDetailsChart() {
+      let detailsChartElement = document.getElementById("detailsChart")
+      detailsChartElement.style.display = ""
+      let detailsBack = document.getElementById("backChart")
+      detailsBack.style.display = ""
+    }
+
+    function updateDetailsChart(seriez) {
+      detailsChart.update({
+        series: seriez
+      }, true, true)
+    }
   </script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
