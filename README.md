@@ -1,6 +1,7 @@
 # Smart Insurance Proof of Concept on the COBI.Bike platform
-This is a custom module for the COBI.Bike platform currently available under the url: https://smartleeroy.herokuapp.com/
-We want to showcase a Pay-per-Use mobility insurance based on a realtime driving score, estimated by machine learning techniques. 
+This is the result of the BCW2020 hackathon. A custom module for the COBI.Bike platform currently available under the url: https://smartleeroy.herokuapp.com/.
+
+We want to showcase a Pay-per-Use mobility insurance based on a realtime driving score, estimated by machine learning techniques that take sensors into account, which measure acceleration, speed, bearing and gps.
 
  
 ### Step 1: Clone this repository
